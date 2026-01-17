@@ -113,29 +113,31 @@ public class LanguageModel {
      * @return the generated text
      */
     public String generate(String initialText, int textLength) {
-        if (initialText.length() >= textLength) {
-            return initialText.substring(0, textLength);
-        }
-        if (initialText.length() < windowLength) {
-            return initialText;
-        }
+    int targetLength = initialText.length() + textLength;
 
-        StringBuilder generated = new StringBuilder(initialText);
-        String window = initialText.substring(initialText.length() - windowLength);
-
-        while (generated.length() < textLength) {
-            List probs = CharDataMap.get(window);
-            if (probs == null) {
-                break;
-            }
-
-            char nextChar = getRandomChar(probs);
-            generated.append(nextChar);
-            window = generated.substring(generated.length() - windowLength);
-        }
-
-        return generated.toString();
+    if (initialText.length() >= targetLength) {
+        return initialText.substring(0, targetLength);
     }
+    if (initialText.length() < windowLength) {
+        return initialText;
+    }
+
+    StringBuilder generated = new StringBuilder(initialText);
+    String window = initialText.substring(initialText.length() - windowLength);
+
+    while (generated.length() < targetLength) {
+        List probs = CharDataMap.get(window);
+        if (probs == null) {
+            break;
+        }
+
+        char nextChar = getRandomChar(probs);
+        generated.append(nextChar);
+        window = generated.substring(generated.length() - windowLength);
+    }
+
+    return generated.toString();
+}
 
     /** Returns a string representing the map of this language model. */
     public String toString() {
