@@ -50,11 +50,15 @@ public class List {
     /** GIVE Textual representation of this list. */
     public String toString() {
         StringBuilder sb = new StringBuilder();
+        sb.append("(");
         Node curr = first;
         while (curr != null) {
             sb.append(curr.toString());
+            if (curr.next != null)
+                sb.append(" ");
             curr = curr.next;
         }
+        sb.append(")");
         return sb.toString();
     }
 
